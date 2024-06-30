@@ -23,7 +23,7 @@ const SideNav = ({ onComponentChange }) => {
   const initials = getInitials(displayName);
 
   return (
-    <div className={`border-r-2 fixed bg-gray-900 border-white h-screen ${open ? 'w-80' : 'w-20'} duration-300 relative text-white`}>
+    <div className={`border-r-2 fixed bg-gray-900 hidden md:block border-white h-screen ${open ? 'w-80' : 'w-20'} duration-300 relative text-white`}>
       <div className="flex flex-row items-center justify-between text-white m-5">
         <div className="logo flex flex-row items-center">
           <GiAbstract118 className={`w-10 h-10 duration-500 ${open ? 'rotate-[360deg]' : ''}`} />
@@ -44,20 +44,20 @@ const SideNav = ({ onComponentChange }) => {
             <BsPersonWorkspace className="m-1" />
             <span className={`${!open ? 'hidden' : 'block'} duration-300 mx-7`}>Vaults</span>
           </button>
-          <button onClick={() => handleComponentClick('Share')} className="hover:bg-indigo-500 rounded-lg w-full p-2 flex items-center">
+          {/* <button onClick={() => handleComponentClick('Share')} className="hover:bg-indigo-500 rounded-lg w-full p-2 flex items-center">
             <PiChatsTeardropLight className="m-1" />
             <span className={`${!open ? 'hidden' : 'block'} duration-300 mx-7`}>Share</span>
-          </button>
+          </button> */}
         </div>
       </div>
 
       {/* Profile Card */}
-      <div className={`absolute bottom-5 left-5 right-5 bg-[#1f2937] p-4 rounded-lg shadow-lg ${!open ? 'scale-0' : ''}`}>
-        <div className="flex items-center">
-          <div className="w-12 h-12 rounded-full border-2 border-indigo-500 flex items-center justify-center bg-gray-300 text-indigo-500 font-bold">
+      <div className={`absolute bottom-5 left-5 right-5  bg-[#1f2937] p-6 rounded-lg shadow-lg ${!open ? 'scale-0' : ''}`}>
+        <div className="flex items-center justify-center flex-col">
+          <div className=" size-20  rounded-full border-2 border-indigo-500 flex items-center justify-center bg-gray-300 text-indigo-500 font-bold">
             {initials}
           </div>
-          <div className="ml-4">
+          <div className=" text-center">
             <h4 className="text-lg  text-white font-semibold">{currentUser.displayName || currentUser.email}</h4>
             <p className="text-gray-600">{currentUser.email}</p>
           </div>

@@ -133,20 +133,79 @@ greeting()
 
   const getFileExtension = (language) => {
     switch (language) {
-      case 'jsx':
-        return ".jsx";
-      case 'javascript':
-        return ".js";
-      case 'python':
-        return ".py";
+      case 'bash':
+        return ".sh";
+      case 'c':
+        return ".c";
+      case 'clojure':
+        return ".clj";
+      case 'cpp':
+        return ".cpp";
+      case 'csharp':
+        return ".cs";
+      case 'dart':
+        return ".dart";
+      case 'elixir':
+        return ".ex";
+      case 'elm':
+        return ".elm";
+      case 'erlang':
+        return ".erl";
+      case 'fsharp':
+        return ".fs";
+      case 'graphql':
+        return ".graphql";
+      case 'go':
+        return ".go";
+      case 'groovy':
+        return ".groovy";
+      case 'haskell':
+        return ".hs";
       case 'html':
         return ".html";
+      case 'java':
+        return ".java";
+      case 'javascript':
+        return ".js";
+      case 'jsx':
+        return ".jsx";
+      case 'julia':
+        return ".jl";
+      case 'kotlin':
+        return ".kt";
+      case 'lisp':
+        return ".lisp";
+      case 'makefile':
+        return ".mk";
+      case 'matlab':
+        return ".m";
+      case 'objectivec':
+        return ".m";
+      case 'ocaml':
+        return ".ml";
+      case 'php':
+        return ".php";
+      case 'python':
+        return ".py";
+      case 'ruby':
+        return ".rb";
+      case 'rust':
+        return ".rs";
+      case 'scala':
+        return ".scala";
+      case 'sql':
+        return ".sql";
+      case 'swift':
+        return ".swift";
+      case 'tsx':
+        return ".tsx";
+      case 'typescript':
+        return ".ts";
       default:
         return ".ext";
     }
   };
-
-
+  
 
   const togglePreview = () => {
     setShowPreview(!showPreview);
@@ -160,10 +219,12 @@ greeting()
       setErrorMessage('Code cannot be empty.');
       return;
     }
+
+
     
     try {
       const snippetData = {
-        title: `${fileName}${getFileExtension(selectedLanguage)}`,
+        title: `${fileName}`+`${getFileExtension(selectedLanguage)}`,
         code: userCode,
         language: selectedLanguage,
         createdBy: currentUser.uid,
@@ -195,10 +256,11 @@ greeting()
 
   return (
     <div className="min-h-screen w-screen  p-20 flex-1 bg-gray-900 text-white flex flex-col overflow-scroll  ">
-      <div className="mb-4 flex flex-row justify-between items-center gap-2">
+     <div className="mb-4 flex flex-col md:flex-row justify-between items-center md:items-center gap-2">
+
       <button
          onClick={togglePreview}
-         className=" px-6 mx-12 rounded-md text-white h-9 bg-indigo-500 hover:bg-indigo-600  transition"
+         className=" md:px-6 mx-12  rounded-md text-white h-9 bg-indigo-500 hover:bg-indigo-600  transition"
        >
          {showPreview ? 'Edit' : 'Preview'}
        </button>
@@ -237,8 +299,8 @@ greeting()
   
   
       </div>
-      <div className="flex w-full space-x-4 justify-center">
-        <div className="w-full h-screen flex flex-col">
+      <div className="flex w-full md:space-x-4 justify-center">
+        <div className="md:w-full w-96  md:h-screen h-96 flex flex-col">
    
           {showPreview ? (
             <>
@@ -268,7 +330,7 @@ greeting()
           ) : (
             <>
                    <div className="flex items-center justify-between bg-gray-800 p-2 rounded-t-2xl">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 mx-2">
               {getFileIcon(selectedLanguage)}
               <input
                 type="text"
