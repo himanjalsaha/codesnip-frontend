@@ -6,7 +6,7 @@ import { GiAbstract118 } from 'react-icons/gi';
 import { useAuth } from '../context/AuthContext'; // Import useAuth hook from your project
 
 const SideNav = ({ onComponentChange }) => {
-  const { currentUser } = useAuth(); // Access currentUser from useAuth hook
+  const { currentUser  , logout} = useAuth(); // Access currentUser from useAuth hook
   const [open, setOpen] = useState(true);
 
   const handleComponentClick = (componentName) => {
@@ -61,6 +61,8 @@ const SideNav = ({ onComponentChange }) => {
             <h4 className="text-lg  text-white font-semibold">{currentUser.displayName || currentUser.email}</h4>
             <p className="text-gray-600">{currentUser.email}</p>
           </div>
+          <button className='bg-violet-400 p-2 rounded-sm' onClick={logout}>logout</button>
+
         </div>
       </div>
     </div>
