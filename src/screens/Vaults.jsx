@@ -68,7 +68,7 @@ const Vaults = () => {
   };
 
   return (
-    <div className="min-h-screen w-screen overflow-x-hidden bg-gray-900 text-white flex justify-center overflow-scroll">
+    <div className="min-h-screen w-full overflow-x-hidden bg-gray-900 text-white flex justify-center overflow-scroll">
       {loading && snippets.length === 0 ? (
         <p className="text-gray-400 flex justify-center items-center h-screen"><Loader /></p>
       ) : snippets.length === 0 ? (
@@ -77,9 +77,9 @@ const Vaults = () => {
           <p className="text-xl text-gray-400">No snippets found.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
           {snippets.map(snippet => (
-            <div key={snippet.id} className="p-4 rounded-lg">
+            <div key={snippet.id} className=" rounded-lg">
               <Example
                 filename={snippet.title}
                 code={snippet.code}
