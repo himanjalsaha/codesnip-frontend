@@ -3,20 +3,22 @@ import { FiMousePointer } from "react-icons/fi";
 import Edit from "./Edit";
 import ExampleWrapper from "./Modal";
 
-const Example = ({ filename, code , snippetId , language , onDelete }) => {
+const Example = ({ filename, code , snippetId , language , onDelete , fetchsnippet }) => {
   return (
-    <div className="grid w-full place-content-center px-4 py-12 ">
+    <div className="grid w-full place-content-center px-4 py-2 ">
+      
    
-      <CodeCard filename={filename} code={code}  snippetId={snippetId} language={language} onDelete={onDelete}/>
+      <CodeCard filename={filename} code={code}  snippetId={snippetId} language={language} onDelete={onDelete} fetchsnippet={fetchsnippet}/>
     </div>
   );
 };
 
-const CodeCard = ({ filename, code , snippetId , language  , onDelete}) => {
+const CodeCard = ({ filename, code , snippetId , language  , onDelete , fetchsnippet}) => {
   const [showMore, setShowMore] = useState(false);
   const [editing, setEditing] = useState(false);
   const [newFilename, setNewFilename] = useState(filename);
   const [newCode, setNewCode] = useState(code);
+  
 
 
 
@@ -27,6 +29,7 @@ const CodeCard = ({ filename, code , snippetId , language  , onDelete}) => {
   const handleDeleteSnippet = async () => {
     try {
       await onDelete(snippetId);
+      
     } catch (error) {
       console.error('Error deleting snippet:', error);
     }
@@ -36,7 +39,7 @@ const CodeCard = ({ filename, code , snippetId , language  , onDelete}) => {
   return (
     <div className="relative h-96 w-72 rounded-xl p-5 bg-gradient-to-br from-[#6366F1] to-violet-300">
           <div className=" flex flex-row-reverse">
-          <Edit onDelete={handleDeleteSnippet} code={code} filename={filename} language={language} snippetId={snippetId} />
+          <Edit onDelete={handleDeleteSnippet} code={code} filename={filename} language={language} snippetId={snippetId}  />
           </div>
       <div className="absolute inset-4 rounded-xl bg-gray-900 shadow-lg">
         <div className="flex justify-between items-center w-full px-3 bg-gray-800 rounded-t-lg">

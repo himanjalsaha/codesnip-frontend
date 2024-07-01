@@ -6,7 +6,7 @@ import { GiAbstract118 } from 'react-icons/gi';
 import { useAuth } from '../context/AuthContext'; // Import useAuth hook from your project
 
 const SideNav = ({ onComponentChange }) => {
-  const { currentUser  , logout} = useAuth(); // Access currentUser from useAuth hook
+  const { currentUser, logout } = useAuth(); // Access currentUser from useAuth hook
   const [open, setOpen] = useState(true);
 
   const handleComponentClick = (componentName) => {
@@ -42,27 +42,27 @@ const SideNav = ({ onComponentChange }) => {
           </button>
           <button onClick={() => handleComponentClick('Vaults')} className="hover:bg-indigo-500 rounded-lg w-full p-2 flex items-center">
             <BsPersonWorkspace className="m-1" />
-            <span className={`${!open ? 'hidden' : 'block'} duration-300 mx-7`}>Vaults</span>
+            <span className={`${!open ? 'hidden' : 'block'} duration-300 mx-7`}>Your Vault</span>
           </button>
-          {/* <button onClick={() => handleComponentClick('Share')} className="hover:bg-indigo-500 rounded-lg w-full p-2 flex items-center">
-            <PiChatsTeardropLight className="m-1" />
-            <span className={`${!open ? 'hidden' : 'block'} duration-300 mx-7`}>Share</span>
-          </button> */}
         </div>
       </div>
 
       {/* Profile Card */}
-      <div className={`absolute bottom-5 left-5 right-5  bg-[#1f2937] p-6 rounded-lg shadow-lg ${!open ? 'scale-0' : ''}`}>
-        <div className="flex items-center justify-center flex-col">
-          <div className=" size-20  rounded-full border-2 border-indigo-500 flex items-center justify-center bg-gray-300 text-indigo-500 font-bold">
+      <div className={`absolute bottom-5 left-5 right-5 bg-gradient-to-r from-indigo-500 to-purple-500 p-6 rounded-lg shadow-xl transform transition-transform duration-300 ${!open ? 'scale-0' : 'scale-100'}`}>
+        <div className="flex items-center justify-center flex-col text-white">
+          <div className="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-gray-300 text-indigo-500 font-bold text-2xl">
             {initials}
           </div>
-          <div className=" text-center">
-            <h4 className="text-lg  text-white font-semibold">{currentUser.displayName || currentUser.email}</h4>
-            <p className="text-gray-600">{currentUser.email}</p>
+          <div className="text-center mt-4">
+            <h4 className="text-lg font-semibold">{currentUser.displayName || currentUser.email}</h4>
+            <p className="text-gray-200">{currentUser.email}</p>
           </div>
-          <button className='bg-violet-400 p-2 rounded-sm' onClick={logout}>logout</button>
-
+          <button
+            className="bg-white text-indigo-500 font-medium mt-4 py-2 px-6 rounded-full shadow-lg hover:bg-indigo-100 transition-colors duration-300"
+            onClick={logout}
+          >
+            Logout
+          </button>
         </div>
       </div>
     </div>

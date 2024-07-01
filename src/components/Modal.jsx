@@ -87,6 +87,7 @@ export const SpringModal = ({
 
   // Function to export specific div content as PDF using html2canvas and jsPDF
   const exportToPDF = () => {
+    setExportingPDF(true)
     const divElement = divRef.current;
     const scrollTop = divElement.scrollTop;
     divElement.scrollTop = 0;

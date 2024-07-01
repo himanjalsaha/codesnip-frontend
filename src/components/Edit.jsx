@@ -5,7 +5,7 @@ import EditModal from "./EditModal";
 import { FiEdit, FiShare, FiTrash } from "react-icons/fi";
 import { set } from "firebase/database";
 
-const Edit = ({ onDelete , code , filename ,language , snippetId }) => {
+const Edit = ({ onDelete , code , filename ,language , snippetId , fetchsnippet }) => {
   const [open, setOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [showbutton , setshowbutton] = useState(true)
@@ -29,11 +29,11 @@ const Edit = ({ onDelete , code , filename ,language , snippetId }) => {
       <motion.div animate={open ? "open" : "closed"}  className=" relative">
         <button
           onClick={() => setOpen((pv) => !pv)}
-          className="flex  items-center gap-2 px-3 py-2 rounded-md text-indigo-50 bg-transparent"
+          className="flex  items-center  gap-2 px-3 py-1  rounded-lg text-indigo-50 bg-transparent"
           style={{ zIndex: 10 }} // Ensure the dropdown button is above other content
         >
-          <span className="font-medium text-sm">
-            <BiDotsVerticalRounded />
+          <span className="font-medium text-2xl ">
+            <BiDotsVerticalRounded  className=""/>
           </span>
         </button>
 
