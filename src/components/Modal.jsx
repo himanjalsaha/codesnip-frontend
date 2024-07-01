@@ -200,6 +200,7 @@ export const SpringModal = ({
                     showLineNumbers={true}
                     theme={selectedTheme}
                     wrapLongLines={true}
+                    highlight="1"
                   />
                   <div
                     className={`px-2 py-4 rounded-b-2xl ${getSpanBgColor(selectedTheme)}`}

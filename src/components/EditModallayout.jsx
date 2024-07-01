@@ -91,7 +91,7 @@ export const EditModallayout = ({
             // Update local state with new values
             setUpdatedCode(data.code);
             setUpdateFilename(data.filename);
-            fetchsnippet()
+       
     
             setIsOpen(false); // Close the modal after successful update
             setLoading(false); // Set loading state false after update completes
