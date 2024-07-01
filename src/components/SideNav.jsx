@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { FaAngleRight, FaTasks } from 'react-icons/fa';
 import { BsPersonWorkspace } from 'react-icons/bs';
-import { PiChatsTeardropLight } from 'react-icons/pi';
-import { GiAbstract118 } from 'react-icons/gi';
+import { PiChatsTeardropLight, PiSparkleBold } from 'react-icons/pi';
+import { GiAbstract118, GiSparkles } from 'react-icons/gi';
 import { useAuth } from '../context/AuthContext'; // Import useAuth hook from your project
 import logo from '../assets/logo-dark.png'
 import { LiaLaptopCodeSolid } from "react-icons/lia";
+import { LuSparkle } from 'react-icons/lu';
 
 // Modal Component for Logout Confirmation
 const LogoutModal = ({ isOpen, onClose, onLogout }) => {
@@ -64,7 +65,7 @@ const SideNav = ({ onComponentChange }) => {
           <span className={`font-extrabold mx-4 font-sans text-2xl ${!open ? 'scale-0' : ''} duration-300`}>CodeStore</span>
         </div>
         <button onClick={() => setOpen(!open)}>
-          <FaAngleRight className={`w-12 h-12 absolute ${open ? 'rotate-180' : ''} bg-indigo-500 duration-500 rounded-full -right-6 top-12`} />
+          <FaAngleRight className={`w-12 h-12 absolute ${open ? 'rotate-180' : ''} bg-indigo-500 duration-500 rounded-full z-10 -right-6 top-12`} />
         </button>
       </div>
 
@@ -77,6 +78,10 @@ const SideNav = ({ onComponentChange }) => {
           <button onClick={() => handleComponentClick('Vaults')} className="hover:bg-indigo-500 rounded-lg w-full p-2 flex items-center">
             <BsPersonWorkspace className="m-1" />
             <span className={`${!open ? 'hidden' : 'block'} duration-300 mx-7`}>Your Vault</span>
+          </button>
+          <button onClick={() => handleComponentClick('chat')} className="hover:bg-indigo-500 rounded-lg w-full p-2 flex items-center">
+            <PiSparkleBold className="m-1" />
+            <span className={`${!open ? 'hidden' : 'block'} duration-300 mx-7`}>ai</span>
           </button>
         </div>
       </div>

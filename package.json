@@ -13,6 +13,7 @@
     "@react-pdf/renderer": "^3.4.4",
     "@uiw/react-codemirror": "^4.22.2",
     "codemirror": "^6.0.1",
+    "deep-chat-react": "^1.4.11",
     "file-saver": "^2.0.5",
     "firebase": "^10.12.2",
     "framer-motion": "^11.2.12",

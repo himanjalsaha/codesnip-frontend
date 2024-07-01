@@ -4,11 +4,15 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners'; // Import ClipLoader for loading animation
+import { GiSemiClosedEye } from 'react-icons/gi';
+import { FaEyeSlash } from 'react-icons/fa';
+import { IoEyeSharp } from 'react-icons/io5';
 
 export default function Signupform() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State for showing password
   const { signup } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // State for loading button
@@ -113,6 +117,7 @@ export default function Signupform() {
               <div className="relative flex items-center mt-2">
                 <button
                   type="button"
+                  onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
                   className="absolute right-0 focus:outline-none rtl:left-0 rtl:right-auto"
                 >
                   <svg
@@ -121,17 +126,16 @@ export default function Signupform() {
                     fill="currentColor"
                     className="w-6 h-6 mx-4 text-gray-400 transition-colors duration-300 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400"
                   >
-                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
-                    <path
-                      fillRule="evenodd"
-                      d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
-                      clipRule="evenodd"
-                    />
+                    {showPassword ? (
+                    <FaEyeSlash />
+                    ) : (
+                      <IoEyeSharp />
+                    )}
                   </svg>
                 </button>
 
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"} // Toggle input type
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
