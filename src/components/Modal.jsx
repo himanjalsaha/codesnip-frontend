@@ -8,7 +8,7 @@ import { themes, getSpanBgColor } from "../utils/Getspan";
 import StaggeredDropDown from "./ThemeDropdown";
 import SlideInNotifications from "./Toast";
 import { ClipLoader } from "react-spinners";
-import html2canvas from 'html2canvas';
+import axios from 'axios';
 import jsPDF from 'jspdf';
 
 const ExampleWrapper = ({ code, language, filename, snippetId }) => {
@@ -85,46 +85,98 @@ export const SpringModal = ({
     setShowPreview(!showPreview);
   };
 
-  // Function to export specific div content as PDF using html2canvas and jsPDF
-  const exportToPDF = () => {
-    setExportingPDF(true)
-    const divElement = divRef.current;
-    const scrollTop = divElement.scrollTop;
-    divElement.scrollTop = 0;
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    
-    html2canvas(divElement, {
-      scrollY: -window.scrollY,
-      scale: 1,
-      height: divElement.scrollHeight,
-      windowHeight: divElement.scrollHeight,
-    }).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      let imgHeight = canvas.height * pdfWidth / canvas.width;
-      let heightLeft = imgHeight;
-      let position = 0;
-
-      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-      heightLeft -= pdfHeight;
-
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-        heightLeft -= pdfHeight;
+  // Function to export code as text in PDF with description from API
+  const exportToPDF = async () => {
+    setExportingPDF(true);
+  
+    try {
+      // Make API call to get description
+      const response = await axios.post('https://codesnips-backend.onrender.com/chat', {
+        message: `Describe the following code: \n\n${code}`
+      });
+  
+      const description = response.data.response;
+  
+      const pdf = new jsPDF();
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const margin = 20;
+      const textWidth = pdfWidth - 2 * margin;
+      const lineHeight = 12;
+  
+      let y = margin; // Initial Y position for the text
+  
+      const addHeader = (title) => {
+        pdf.setFontSize(16);
+        pdf.setTextColor(40, 116, 240); // Blue color
+        pdf.text(title, pdfWidth / 2, y, { align: 'center' });
+        y += lineHeight * 2;
+        pdf.setDrawColor(40, 116, 240);
+        pdf.line(margin, y, pdfWidth - margin, y); // Horizontal line
+        y += lineHeight;
+      };
+  
+      const addFooter = (page) => {
+        pdf.setFontSize(10);
+        pdf.setTextColor(150);
+        pdf.text(`Page ${page}`, pdfWidth / 2, pdfHeight - margin / 2, { align: 'center' });
+      };
+  
+      let page = 1;
+      addHeader('Code Description and Snippet');
+      addFooter(page);
+  
+      // Add description to the PDF
+      pdf.setFontSize(12);
+      pdf.setTextColor(0);
+      pdf.text(`Description:`, margin, y);
+      y += lineHeight;
+      pdf.setFontSize(10);
+      const descriptionLines = pdf.splitTextToSize(description, textWidth);
+      for (let i = 0; i < descriptionLines.length; i++) {
+        if (y + lineHeight > pdfHeight - margin) {
+          pdf.addPage();
+          page++;
+          y = margin;
+          addHeader('Code Description and Snippet (continued)');
+          addFooter(page);
+          pdf.setTextColor(0); // Reset text color for new page
+        }
+        pdf.text(descriptionLines[i], margin, y);
+        y += lineHeight;
       }
-
+  
+      pdf.addPage();
+      page++;
+      y = margin;
+      addHeader('Code Snippet');
+      addFooter(page);
+  
+      // Split the code into lines and add them to the PDF, handling pagination
+      pdf.setFont('Courier');
+      pdf.setFontSize(10);
+      const codeLines = pdf.splitTextToSize(code, textWidth);
+      for (let i = 0; i < codeLines.length; i++) {
+        if (y + lineHeight > pdfHeight - margin) {
+          pdf.addPage();
+          page++;
+          y = margin;
+          addHeader('Code Snippet (continued)');
+          addFooter(page);
+          pdf.setTextColor(0); // Reset text color for new page
+        }
+        pdf.text(codeLines[i], margin, y);
+        y += lineHeight;
+      }
+  
       pdf.save(`${filename}.pdf`);
-      setExportingPDF(false); // Finish exporting
-      divElement.scrollTop = scrollTop;
-    }).catch(error => {
+    } catch (error) {
       console.error('Failed to export PDF:', error);
-      setExportingPDF(false); // Finish exporting on error
-      divElement.scrollTop = scrollTop;
-    });
+    } finally {
+      setExportingPDF(false);
+    }
   };
+  
 
   return (
     <AnimatePresence>
@@ -200,7 +252,7 @@ export const SpringModal = ({
                     showLineNumbers={true}
                     theme={selectedTheme}
                     wrapLongLines={true}
-                    highlight="1"
+                  
                   />
                   <div
                     className={`px-2 py-4 rounded-b-2xl ${getSpanBgColor(selectedTheme)}`}

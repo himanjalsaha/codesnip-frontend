@@ -49,7 +49,7 @@ const Edit = ({ onDelete , code , filename ,language , snippetId , fetchsnippet 
         </motion.ul>
       </motion.div>
       
-      <EditModal isOpen={modalOpen} onClose={handleCloseModal} code={code} filename={filename} language={language} snippetId={snippetId} />
+      <EditModal isOpen={modalOpen} onClose={handleCloseModal} code={code} filename={filename} language={language} snippetId={snippetId} fetchsnippet={fetchsnippet} />
     </div>
   );
 };

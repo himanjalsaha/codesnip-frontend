@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { FaAngleRight, FaTasks } from 'react-icons/fa';
 import { BsPersonWorkspace } from 'react-icons/bs';
-import { PiChatsTeardropLight, PiSparkleBold } from 'react-icons/pi';
-import { GiAbstract118, GiSparkles } from 'react-icons/gi';
+import { PiSparkleBold } from 'react-icons/pi';
 import { useAuth } from '../context/AuthContext'; // Import useAuth hook from your project
-import logo from '../assets/logo-dark.png'
 import { LiaLaptopCodeSolid } from "react-icons/lia";
 import { LuSparkle } from 'react-icons/lu';
 
@@ -30,9 +28,11 @@ const SideNav = ({ onComponentChange }) => {
   const { currentUser, logout } = useAuth(); // Access currentUser from useAuth hook
   const [open, setOpen] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [activeButton, setActiveButton] = useState('CreateSnippet'); // State to track active button
 
   const handleComponentClick = (componentName) => {
     onComponentChange(componentName);
+    setActiveButton(componentName); // Update active button state
   };
 
   const getInitials = (name) => {
@@ -58,8 +58,8 @@ const SideNav = ({ onComponentChange }) => {
   };
 
   return (
-    <div className={`border-r-2 fixed bg-gray-900 hidden md:block border-white h-screen ${open ? 'w-80' : 'w-20'} duration-300 relative text-white`}>
-      <div className="flex flex-row items-center justify-between text-white m-5">
+    <div className={`border-r-2 fixed bg-gray-900 md:block border-white h-screen ${open ? 'w-80' : 'w-20'} duration-300 relative text-white`}>
+      <div className="flex flex-col md:flex-row items-center justify-between text-white m-5">
         <div className="logo flex flex-row items-center">
           <LiaLaptopCodeSolid className={`w-10 h-10 duration-500 ${open ? 'rotate-[360deg]' : ''}`} />
           <span className={`font-extrabold mx-4 font-sans text-2xl ${!open ? 'scale-0' : ''} duration-300`}>CodeStore</span>
@@ -69,19 +69,34 @@ const SideNav = ({ onComponentChange }) => {
         </button>
       </div>
 
-      <div className="my task">
-        <div className="text-gray-200 text-lg flex items-center flex-col m-2 p-2">
-          <button onClick={() => handleComponentClick('CreateSnippet')} className="hover:bg-indigo-500 rounded-lg w-full p-2 flex items-center">
+      <div className="my-4">
+        <div className="text-gray-200 gap-2 text-lg flex flex-col m-2 p-2">
+          <button
+            onClick={() => handleComponentClick('CreateSnippet')}
+            className={`hover:bg-indigo-500 rounded-lg w-full p-2 flex items-center ${activeButton === 'CreateSnippet' ? 'bg-indigo-500 text-white' : ''}`}
+          >
             <FaTasks className="m-1" />
-            <span className={`${!open ? 'hidden' : 'block'} duration-300 mx-7`}>Create Snippet</span>
+            <span className={`${!open ? 'hidden' : 'block'} duration-300 mx-2 md:mx-7`}>Create Snippet</span>
           </button>
-          <button onClick={() => handleComponentClick('Vaults')} className="hover:bg-indigo-500 rounded-lg w-full p-2 flex items-center">
+          <button
+            onClick={() => handleComponentClick('Vaults')}
+            className={`hover:bg-indigo-500 rounded-lg w-full p-2 flex items-center ${activeButton === 'Vaults' ? 'bg-indigo-500 text-white' : ''}`}
+          >
             <BsPersonWorkspace className="m-1" />
-            <span className={`${!open ? 'hidden' : 'block'} duration-300 mx-7`}>Your Vault</span>
+            <span className={`${!open ? 'hidden' : 'block'} duration-300 mx-2 md:mx-7`}>Your Vault</span>
           </button>
-          <button onClick={() => handleComponentClick('chat')} className="hover:bg-indigo-500 rounded-lg w-full p-2 flex items-center">
-            <PiSparkleBold className="m-1" />
-            <span className={`${!open ? 'hidden' : 'block'} duration-300 mx-7`}>ai</span>
+          <button
+            onClick={() => handleComponentClick('chat')}
+            className={`hover:bg-indigo-500 rounded-lg text-white w-full p-2 flex items-center relative ${activeButton === 'chat' ? 'bg-indigo-500' : ''}`}
+          >
+            <PiSparkleBold className="m-1 text-white" />
+            <span className={`${!open ? 'hidden' : 'block'} text-white duration-300 mx-2 md:mx-7`}>ai</span>
+            <div className={`${!open ? 'hidden' : 'block'} relative inline-block`}>
+              <div className="bg-gradient-to-r from-purple-400 to-blue-500 rounded-lg text-white px-2 py-1 text-xs">
+                New
+              </div>
+              <div className="absolute inset-0 rounded-lg bg-transparent border-2 border-gradient-to-r from-purple-400 to-blue-500 pointer-events-none"></div>
+            </div>
           </button>
         </div>
       </div>

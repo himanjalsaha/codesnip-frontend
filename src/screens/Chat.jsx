@@ -1,36 +1,125 @@
-import React from 'react';
-import { DeepChat } from 'deep-chat-react';
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import { motion } from 'framer-motion';
+import Markdown from 'react-markdown';
+import { CodeBlock, dracula } from 'react-code-blocks';
+import remarkGfm from 'remark-gfm'
 
 const Chat = () => {
-  const initialMessages = [
-    { role: 'user', text: 'Hey, how are you today?' },
-    { role: 'ai', text: 'I am doing very well!' },
-  ];
+  const [messages, setMessages] = useState([
+    { role: 'ai', text: 'Welcome! How can I assist you?' }
+  ]);
+  const [inputMessage, setInputMessage] = useState('');
+  const [code , setcode] = useState([])
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleSendMessage = async () => {
+    if (!inputMessage.trim()) return;
+
+    const newMessage = { role: 'user', text: inputMessage };
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+    setInputMessage('');
+
+    try {
+      const response = await axios.post('https://codesnips-backend.onrender.com/chat', {
+        message: inputMessage
+      });
+
+      const aiMessage = { role: 'ai', text: response.data.response };
+      setMessages((prevMessages) => [...prevMessages, aiMessage]);
+
+      // Extract and store code blocks from AI response
+      extractAndStoreCodeBlocks(aiMessage.text);
+    } catch (error) {
+      console.error('Error creating chat completion:', error);
+      console.log('Error response data:', error.response.data);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { role: 'system', text: 'Error creating chat completion.' }
+      ]);
+    }
+  };
+
+  const isCode = (text) => {
+    // Regular expression to match code blocks surrounded by triple backticks
+    const codeBlockRegex = /^```[\s\S]*```$/;
+
+    // Check if the text matches the code block regex
+    return codeBlockRegex.test(text.trim());
+  };
+
+  const extractAndStoreCodeBlocks = (responseText) => {
+    // Regular expression to find code blocks
+    const codeBlockRegex = /```([\s\S]*?)```/g;
+    let match;
+    
+    while ((match = codeBlockRegex.exec(responseText)) !== null) {
+      const codeText = match[1];
+      // Here you can store or process each code block as needed
+      console.log('Found code block:', codeText);
+      // Example: You might want to save it to state or perform other operations
+    }
+  };
 
   return (
-    <div className="h-full flex-1 w-full flex justify-center flex-col bg-gray-900 items-center">
-      <h1 className="text-white mb-4"></h1>
-      <DeepChat
-      
-        demo={true}
-        style={{ height: '100%', width: '100%', backgroundColor: '#111827', border: 'none', borderRadius: '0' }}
-        textInput={{
-          placeholder: { text: 'Welcome to the demo!' },
-          "styles": {
-            "text": {"color": "black"},
-            "container": {"maxHeight": "100px", "backgroundColor": "#f5f9ff" , "padding":"20px" , "borderRadius":"50px" },
-            "focus": {"border": "2px solid #a2a2ff"}
-            
-          },
-          
-
-        }}
-
-        
-        initialMessages={initialMessages}
-      />
+    <div className="flex flex-col flex-1 h-full w-full bg-gray-900">
+      <div className="flex-1 overflow-y-auto px-6 py-8">
+        {messages.map((msg, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`flex mb-4 ${msg.role === 'ai' ? 'justify-start' : 'justify-end'}`}
+          >
+            <div
+              className={`p-4 rounded-lg max-w-full text-white shadow-md text-wrap ${
+                msg.role === 'ai' ? 'bg-gray-800' : 'bg-gradient-to-r from-blue-400 to-green-500 self-end'
+              }`}
+            >
+              {isCode(msg.text) ? (
+                <CodeBlock text={msg.text} theme={dracula}/>
+              ) : (
+                <Markdown  remarkPlugins={[remarkGfm]}>{msg.text}</Markdown>
+              )}
+            </div>
+          </motion.div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
+      <div className="p-4">
+        <div className="flex items-center rounded-lg bg-gray-800 shadow-md">
+          <textarea
+            type="text"
+            placeholder="Type your message..."
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSendMessage();
+              }
+            }}
+            className="flex-1 py-3 px-4 rounded-lg bg-transparent text-white focus:outline-none"
+          />
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={handleSendMessage}
+            className="bg-blue-500 text-white px-4 py-3 rounded-lg ml-3 hover:bg-blue-600 transition duration-200"
+          >
+            Send
+          </motion.button>
+        </div>
+      </div>
     </div>
   );
-}
+};
 
 export default Chat;
