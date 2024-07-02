@@ -3,14 +3,16 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import Markdown from 'react-markdown';
 import { CodeBlock, dracula } from 'react-code-blocks';
-import remarkGfm from 'remark-gfm'
+import remarkGfm from 'remark-gfm';
+import Loader from '../components/Loader';
+
 
 const Chat = () => {
   const [messages, setMessages] = useState([
     { role: 'ai', text: 'Welcome! How can I assist you?' }
   ]);
   const [inputMessage, setInputMessage] = useState('');
-  const [code , setcode] = useState([])
+  const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -28,13 +30,25 @@ const Chat = () => {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
     setInputMessage('');
 
+    // Add an AI placeholder message
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { role: 'ai', text: '', isPlaceholder: true }
+    ]);
+
     try {
+      setLoading(true);
       const response = await axios.post('https://codesnips-backend.onrender.com/chat', {
         message: inputMessage
       });
+      setLoading(false);
 
       const aiMessage = { role: 'ai', text: response.data.response };
-      setMessages((prevMessages) => [...prevMessages, aiMessage]);
+      // Remove the placeholder and add the actual AI message
+      setMessages((prevMessages) => [
+        ...prevMessages.slice(0, -1),
+        aiMessage
+      ]);
 
       // Extract and store code blocks from AI response
       extractAndStoreCodeBlocks(aiMessage.text);
@@ -42,9 +56,10 @@ const Chat = () => {
       console.error('Error creating chat completion:', error);
       console.log('Error response data:', error.response.data);
       setMessages((prevMessages) => [
-        ...prevMessages,
+        ...prevMessages.slice(0, -1),
         { role: 'system', text: 'Error creating chat completion.' }
       ]);
+      setLoading(false);
     }
   };
 
@@ -70,8 +85,8 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1 h-full w-full bg-gray-900">
-      <div className="flex-1 overflow-y-auto px-6 py-8">
+    <div className="flex flex-col flex-1 h-screen w-screen bg-gray-900">
+      <div className="flex-1 h-screen w-full overflow-y-auto px-6 py-8">
         {messages.map((msg, index) => (
           <motion.div
             key={index}
@@ -84,10 +99,12 @@ const Chat = () => {
                 msg.role === 'ai' ? 'bg-gray-800' : 'bg-gradient-to-r from-blue-400 to-green-500 self-end'
               }`}
             >
-              {isCode(msg.text) ? (
-                <CodeBlock text={msg.text} theme={dracula}/>
+              {msg.isPlaceholder ? (
+                <Loader />
+              ) : isCode(msg.text) ? (
+                <CodeBlock text={msg.text} theme={dracula} />
               ) : (
-                <Markdown  remarkPlugins={[remarkGfm]}>{msg.text}</Markdown>
+                <Markdown remarkPlugins={[remarkGfm]}>{msg.text}</Markdown>
               )}
             </div>
           </motion.div>
