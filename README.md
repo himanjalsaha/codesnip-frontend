@@ -48,7 +48,7 @@ Utilize AI features to:
 
 Support
 
-For support or inquiries, please contact our team at support@codesnips.com.
+For support or inquiries, please contact our team at himanjalsaha97@gmail.com.
 Roadmap
 
     Upcoming Features: Discuss upcoming features and enhancements planned for future releases.
