@@ -13,7 +13,7 @@ const Navigation = () => {
   };
 
   return (
-    <div className='flex h-screen flex-1'>
+    <div className='flex overflow-x-hidden h-screen flex-1'>
       <SideNav onComponentChange={handleComponentChange} />
    
      

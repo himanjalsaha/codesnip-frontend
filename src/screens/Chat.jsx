@@ -85,7 +85,7 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1 min-h-screen w-screen bg-gray-900">
+    <div className="flex flex-col flex-1 min-h-screen  bg-gray-900">
       <div className="flex-1 h-screen w-full overflow-y-auto px-6 py-8">
         {messages.map((msg, index) => (
           <motion.div
