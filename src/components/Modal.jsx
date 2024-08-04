@@ -92,9 +92,9 @@ export const SpringModal = ({
     try {
       // Make API call to get description
       const response = await axios.post('https://codesnips-backend.onrender.com/chat', {
-        message: `Describe the following code: \n\n${code}`
+        message: `Please provide a detailed explanation for the following code snippet. Include what the code does, how it works, and any important concepts or libraries it uses and also time complexity  if applicable:\n\n${code}`
       });
-  
+      
       const description = response.data.response;
   
       const pdf = new jsPDF();

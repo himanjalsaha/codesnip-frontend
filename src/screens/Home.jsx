@@ -260,7 +260,7 @@ greeting()
 
       <button
          onClick={togglePreview}
-         className=" md:px-6 mx-12  rounded-md text-white h-9 bg-indigo-500 hover:bg-indigo-600  transition"
+         className=" md:px-6 mx-12 p-2  rounded-md text-white h-9 bg-indigo-500 hover:bg-indigo-600  transition"
        >
          {showPreview ? 'Edit' : 'Preview'}
        </button>

@@ -58,14 +58,14 @@ const SideNav = ({ onComponentChange }) => {
   };
 
   return (
-    <div className={`border-r-2 fixed bg-gray-900 md:block border-white h-screen ${open ? 'w-80' : 'w-20'} duration-300 relative text-white`}>
+    <div className={`border-r-2 fixed bg-gray-900 md:block border-white h-screen ${open ? 'w-80' : 'md:w-20 w-0'} duration-300 relative text-white`}>
       <div className="flex flex-col md:flex-row items-center justify-between text-white m-5">
         <div className="logo flex flex-row items-center">
           <LiaLaptopCodeSolid className={`w-10 h-10 duration-500 ${open ? 'rotate-[360deg]' : ''}`} />
           <span className={`font-extrabold mx-4 font-sans text-2xl ${!open ? 'scale-0' : ''} duration-300`}>CodeStore</span>
         </div>
         <button onClick={() => setOpen(!open)}>
-          <FaAngleRight className={`w-12 h-12 absolute ${open ? 'rotate-180' : ''} bg-indigo-500 duration-500 rounded-full z-10 -right-6 top-12`} />
+          <FaAngleRight className={`w-12 h-12 absolute ${open ? 'rotate-180' : ''} bg-indigo-500 duration-500 md:rounded-full rounded-lg z-10 md:-right-6 -right-12 top-12`} />
         </button>
       </div>
 
@@ -73,21 +73,21 @@ const SideNav = ({ onComponentChange }) => {
         <div className="text-gray-200 gap-2 text-lg flex flex-col m-2 p-2">
           <button
             onClick={() => handleComponentClick('CreateSnippet')}
-            className={`hover:bg-indigo-500 rounded-lg w-full p-2 flex items-center ${activeButton === 'CreateSnippet' ? 'bg-indigo-500 text-white' : ''}`}
+            className={`hover:bg-indigo-500 rounded-lg w-full p-2 flex items-center ${activeButton === 'CreateSnippet' ? 'md:bg-indigo-500 bg-none  text-white' : ''}`}
           >
             <FaTasks className="m-1" />
             <span className={`${!open ? 'hidden' : 'block'} duration-300 mx-2 md:mx-7`}>Create Snippet</span>
           </button>
           <button
             onClick={() => handleComponentClick('Vaults')}
-            className={`hover:bg-indigo-500 rounded-lg w-full p-2 flex items-center ${activeButton === 'Vaults' ? 'bg-indigo-500 text-white' : ''}`}
+            className={`hover:bg-indigo-500 rounded-lg w-full p-2 flex items-center ${activeButton === 'Vaults' ? 'md:bg-indigo-500 bg-none text-white' : ''}`}
           >
             <BsPersonWorkspace className="m-1" />
             <span className={`${!open ? 'hidden' : 'block'} duration-300 mx-2 md:mx-7`}>Your Vault</span>
           </button>
           <button
             onClick={() => handleComponentClick('chat')}
-            className={`hover:bg-indigo-500 rounded-lg text-white w-full p-2 flex items-center relative ${activeButton === 'chat' ? 'bg-indigo-500' : ''}`}
+            className={`hover:bg-indigo-500 rounded-lg text-white w-full p-2 flex items-center relative ${activeButton === 'chat' ? 'md:bg-indigo-500 bg-none' : ''}`}
           >
             <PiSparkleBold className="m-1 text-white" />
             <span className={`${!open ? 'hidden' : 'block'} text-white duration-300 mx-2 md:mx-7`}>ai</span>
